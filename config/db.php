@@ -32,3 +32,26 @@ function closePDO() {
     static $pdo = null;
     $pdo = null;
 }
+
+function executeSelect($sql,$params=[],$one=false){
+     $pdo = getPDO();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    if($one){
+        return $stmt->fetch();
+    }else{
+    return $stmt->fetchAll();
+}
+}
+
+function executeUpdate($sql, $params = []){
+    $pdo = getPDO();
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute($params);
+}
+
+function executeDelete($sql, $params = []){
+    $pdo = getPDO();
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute($params);
+}
