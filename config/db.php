@@ -6,17 +6,16 @@ function getPDO(){
 
     if ($pdo === null) {
         try {
-            // Configuration standard PostgreSQL
+
             $dsn = "pgsql:host=127.0.0.1;port=5432;dbname=gestion_blog";
             
             $pdo = new PDO(
                 $dsn,
                 "postgres", 
-                "postgres", 
+                "admin", 
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    // FORCE PHP à utiliser une connexion persistante pour court-circuiter Apache
                     PDO::ATTR_PERSISTENT => true 
                 ]
             );
@@ -30,8 +29,7 @@ function getPDO(){
 
 
 function closePDO() {
-    // Note : pour détruire proprement une instance statique en PHP, 
-    // on cible la variable statique interne pour libérer la mémoire.
+  
     static $pdo = null;
     $pdo = null;
 }
