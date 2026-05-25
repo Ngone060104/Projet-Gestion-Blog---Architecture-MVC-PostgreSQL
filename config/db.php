@@ -2,21 +2,22 @@
 // Configuration de la connexion PostgreSQL
 
 function getPDO(){
-    // static permet de garder la variable en mémoire entre plusieurs appels
     static $pdo = null; 
 
     if ($pdo === null) {
         try {
-            // Changements majeurs : pilote "pgsql", port "5432" et nom de votre nouvelle BDD "gestion_blog"
+            // Configuration standard PostgreSQL
             $dsn = "pgsql:host=127.0.0.1;port=5432;dbname=gestion_blog";
             
             $pdo = new PDO(
                 $dsn,
-                "postgres",            // Votre utilisateur pgAdmin (par défaut 'postgres')
-                "admin",            // Votre mot de passe pgAdmin
+                "postgres", 
+                "postgres", 
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    // FORCE PHP à utiliser une connexion persistante pour court-circuiter Apache
+                    PDO::ATTR_PERSISTENT => true 
                 ]
             );
         } catch(PDOException $e) {
@@ -25,6 +26,8 @@ function getPDO(){
     }
     return $pdo;
 }
+
+
 
 function closePDO() {
     // Note : pour détruire proprement une instance statique en PHP, 

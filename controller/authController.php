@@ -17,6 +17,9 @@ function loginAction() {
             // Recherche en base de données PostgreSQL
             $user = findUserByEmailAndPassword($email, $password);
 
+             // CORRECTION : Vérification stricte que l'utilisateur existe bien et n'est pas vide
+    if ($user !== false && !empty($user)) {
+
             if ($user) {
                 // SÉCURITÉ SUPPLÉMENTAIRE : On vérifie si le lecteur n'est pas banni
                 if (isset($user['statut_lecteur']) && $user['statut_lecteur'] === 'estBanni') {
@@ -34,6 +37,7 @@ function loginAction() {
             }
         }
     }
+    }
 
     // Chargement de la vue de connexion avec un layout blanc (sans barre latérale)
     loadView("auth/login", ["erreurs" => $erreurs], "blank");
@@ -46,4 +50,9 @@ function logoutAction() {
     
     header("Location: " . WEBROOT . "?controller=auth&action=login");
     exit();
+}
+
+function authAction() {
+    // Redirige automatiquement vers votre formulaire d'authentification
+    loginAction(); 
 }
