@@ -12,15 +12,17 @@ function indexAction() {
     // Récupération des filtres issus des inputs de votre maquette
     $search = trim($_GET['search'] ?? '');
     $role = trim($_GET['role'] ?? '');
+    $statuts = trim($_GET['statut'] ?? '');
 
     // Récupération des utilisateurs filtrés
-    $users = findAllUsers($search, $role);
+    $users = findAllUsers($search, $role, $statuts);
 
     // Chargement de la vue utilisateur avec le layout de la Sidebar
     loadView("user/listUser", [
         "users" => $users,
         "search" => $search,
-        "current_role" => $role
+        "current_role" => $role,
+        "current_statut" => $statuts
     ], "side");
 }
 
