@@ -44,6 +44,12 @@ function findAllUsers(string $search = '', string $role = ''): array {
         $params[] = $role;
     }
 
+    // 3. NOUVEAU : Filtre par statut (actif ou estBanni)
+    if (!empty($statut)) {
+        $sql .= " AND statut_lecteur = ?";
+        $params[] = trim($statut);
+    }
+    
     $sql .= " ORDER BY id_user ASC";
     return executeSelect($sql, $params);
 }
