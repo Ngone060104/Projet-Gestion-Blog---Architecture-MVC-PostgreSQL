@@ -8,10 +8,10 @@
     </div>
 
     <!-- Gille des 4 statistiques adaptatives (Fidèle à ta maquette) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 bg-white p-6 rounded-2xl border border-gray-100 ">
 
         <!-- Carte 1 -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center justify-between border-t-4 border-blue-900">
             <div>
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider"><?= $stats['case1_titre'] ?></p>
                 <p class="text-3xl font-bold text-gray-800 mt-2"><?= $stats['case1_valeur'] ?></p>
@@ -22,18 +22,18 @@
         </div>
 
         <!-- Carte 2 -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div class="bg-white p-6 rounded-2xl shadow-sm  flex items-center justify-between border-t-4 border-green-500">
             <div>
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider"><?= $stats['case2_titre'] ?></p>
                 <p class="text-3xl font-bold text-gray-800 mt-2"><?= $stats['case2_valeur'] ?></p>
             </div>
-            <div class="rounded-xl text-xl flex items-center justify-center w-14 h-14 bg-red-50 text-red-500">
+            <div class="rounded-xl text-xl flex items-center justify-center w-14 h-14 bg-green-50 text-green-500">
                 <i class="<?= $stats['case2_icone'] ?>"></i>
             </div>
         </div>
 
         <!-- Carte 3 -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center justify-between border-t-4 border-purple-500">
             <div>
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider"><?= $stats['case3_titre'] ?></p>
                 <p class="text-3xl font-bold text-gray-800 mt-2"><?= $stats['case3_valeur'] ?></p>
@@ -44,7 +44,7 @@
         </div>
 
         <!-- Carte 4 (La nouvelle carte ajoutée pour le total d'articles) -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+        <div class="bg-white p-6 rounded-2xl shadow-sm flex items-center justify-between border-t-4 border-amber-500">
             <div>
                 <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider"><?= $stats['case4_titre'] ?></p>
                 <p class="text-3xl font-bold text-gray-800 mt-2"><?= $stats['case4_valeur'] ?></p>
@@ -83,19 +83,16 @@
             <button class="w-full py-2 border border-emerald-500 text-emerald-600 font-bold rounded-full text-xs bg-emerald-50/10">
                 ● Tous les Catégories
             </button>
-            <div class="space-y-3">
-                <div class="flex items-center justify-between text-xs font-medium text-gray-600">
-                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full border-2 border-purple-500"></span><span>Politiques</span></div>
-                    <span class="text-gray-400">- 37%</span>
-                </div>
-                <div class="flex items-center justify-between text-xs font-medium text-gray-600">
-                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full border-2 border-green-600"></span><span>Technologie</span></div>
-                    <span class="text-gray-400">- 23%</span>
-                </div>
-                <div class="flex items-center justify-between text-xs font-medium text-gray-600">
-                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full border-2 border-blue-400"></span><span>Économie</span></div>
-                    <span class="text-gray-400">- 29%</span>
-                </div>
+              <div class="space-y-4">
+                <?php foreach ($categories as $cat): ?>
+                    <div class="flex items-center justify-between text-sm py-2 border-b border-gray-50 last:border-0">
+                        <div class="flex items-center gap-3 font-semibold text-gray-600">
+                            <span class="w-3 h-3 rounded-full border-2 <?= $cat['color'] ?> inline-block"></span>
+                            <span><?= htmlspecialchars($cat['nom']) ?></span>
+                        </div>
+                        <span class="font-bold text-gray-400">- <?= $cat['percent'] ?></span>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
 
