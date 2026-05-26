@@ -9,6 +9,8 @@ function indexAction()
         exit();
     }
 
+  
+
     $user = $_SESSION['user'];
     $stats = [];
 
@@ -32,7 +34,7 @@ function indexAction()
     } else {
         // --- STATISTIQUES PERSONNELLES POUR L'AUTEUR (ex: Astou Diop) ---
         $stats['case1_titre'] = "Mon Profil";
-        $stats['case1_valeur'] = "Rédacteur";
+        $stats['case1_valeur'] = "";
         $stats['case1_icone'] = "fas fa-user-circle text-blue-500 bg-blue-50";
 
         // Nombre de lecteurs uniques ayant commenté SES articles
@@ -41,7 +43,7 @@ function indexAction()
         $stats['case2_icone'] = "fas fa-users text-green-500 bg-green-50";
 
         // Total des commentaires reçus sur SES articles
-        $stats['case3_titre'] = "Commentaires Reçus";
+        $stats['case3_titre'] = "Comment Re..";
         $stats['case3_valeur'] = countAuteurCommentsReceived($user['id_user']);
         $stats['case3_icone'] = "fas fa-comments text-purple-500 bg-purple-50";
 
@@ -91,8 +93,10 @@ function indexAction()
     ], "side");
 }
 
+
 function dashboardAction()
 {
     // Redirection vers la fonction principale pour votre routeur
     indexAction();
 }
+

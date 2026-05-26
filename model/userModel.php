@@ -21,3 +21,37 @@ function saveUser(string $nom, string $prenom, string $email, string $password):
     // Utilisation de votre fonction générique d'écriture
     return executeUpdate($sql, [trim($nom), trim($prenom), trim($email), trim($password)]);
 }
+
+// À ajouter dans model/userModel.php
+
+/**
+ * Récupère tous les utilisateurs avec filtres dynamiques (Nom et Rôle)
+ */
+function findAllUsers(string $search = '', string $role = ''): array {
+    $sql = "SELECT * FROM utilisateur WHERE 1=1";
+    $params = [];
+
+    if (!empty($search)) {
+        $sql .= " AND (LOWER(nom) LIKE ? OR LOWER(prenom) LIKE ? OR LOWER(email) LIKE ?)";
+        $searchTerm = "%" . strtolower($search) . "%";
+        $params[] = $searchTerm;
+        $params[] = $searchTerm;
+        $params[] = $searchTerm;
+    }
+
+    if (!empty($role)) {
+        $sql .= " AND role = ?";
+        $params[] = $role;
+    }
+
+    $sql .= " ORDER BY id_user ASC";
+    return executeSelect($sql, $params);
+}
+
+/**
+ * Supprime un utilisateur (Action bouton rouge de la maquette)
+ */
+function deleteUserById(int $id): bool {
+    $sql = "DELETE FROM utilisateur WHERE id_user = ?";
+    return executeUpdate($sql, [$id]);
+}
