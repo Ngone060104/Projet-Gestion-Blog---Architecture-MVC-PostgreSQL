@@ -50,7 +50,7 @@ function countAllArticles(): int {
  * Compte le nombre d'articles rédigés par un auteur spécifique
  */
 function countAuteurArticles(int $id_auteur): int {
-    $sql = "SELECT COUNT(*) as total FROM article WHERE id_utilisateur = ?";
+    $sql = "SELECT COUNT(*) as total FROM article WHERE id_user = ?";
     $result = executeSelect($sql, [$id_auteur], true);
     return (int)($result['total'] ?? 0);
 }
@@ -59,10 +59,10 @@ function countAuteurArticles(int $id_auteur): int {
  * Compte le nombre total de commentaires reçus uniquement sur les articles d'un auteur donné
  */
 function countAuteurCommentsReceived(int $id_auteur): int {
-    $sql = "SELECT COUNT(c.id) as total 
+    $sql = "SELECT COUNT(c.id_comment) as total 
             FROM commentaire c 
-            JOIN article a ON c.id_article = a.id 
-            WHERE a.id_utilisateur = ?";
+            JOIN article a ON c.id_article = a.id_article
+            WHERE a.id_user = ?";
     $result = executeSelect($sql, [$id_auteur], true);
     return (int)($result['total'] ?? 0);
 }
@@ -71,10 +71,24 @@ function countAuteurCommentsReceived(int $id_auteur): int {
  * Compte le nombre de lecteurs distincts (uniques) ayant laissé un commentaire sur les articles de cet auteur
  */
 function countAuteurLecteurs(int $id_auteur): int {
-    $sql = "SELECT COUNT(DISTINCT c.id_utilisateur) as total 
+    $sql = "SELECT COUNT(DISTINCT c.id_user) as total 
             FROM commentaire c 
-            JOIN article a ON c.id_article = a.id 
-            WHERE a.id_utilisateur = ?";
+            JOIN article a ON c.id_article = a.id_article
+            WHERE a.id_user = ?";
     $result = executeSelect($sql, [$id_auteur], true);
+    return (int)($result['total'] ?? 0);
+}
+
+/**
+ * Compte le nombre d'articles publiés pour un jour spécifique de la semaine en cours
+ * (Exemple pour PostgreSQL : 'Mon' pour lundi, 'Tue' pour mardi...)
+ */
+function countArticlesByDay(string $dayName): int {
+    // Requête PostgreSQL pour filtrer par le jour de la semaine textuel raccourci
+    $sql = "SELECT COUNT(*) as total 
+            FROM article 
+            WHERE TO_CHAR(date_pub, 'Dy') = ? 
+            AND date_pub >= DATE_TRUNC('week', CURRENT_DATE)";
+    $result = executeSelect($sql, [$dayName], true);
     return (int)($result['total'] ?? 0);
 }
