@@ -54,6 +54,12 @@
                         <span>Signalement</span>
                     </a>
                 <?php endif; ?>
+                  <a href="<?= path('article', 'index') ?>"
+                        class="flex items-center space-x-4 px-5 py-3.5 rounded-xl transition-all duration-200 font-medium text-sm
+                  <?= $ctrl_actif === 'article' ? 'bg-amber-500/20 text-amber-500 font-bold' : 'text-gray-400 hover:bg-gray-800 hover:text-white' ?>">
+                        <i class="fas fa-book w-5 text-lg"></i>
+                        <span>Articles</span>
+                    </a>
             </nav>
 
         </div>

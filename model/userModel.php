@@ -61,3 +61,23 @@ function deleteUserById(int $id): bool {
     $sql = "DELETE FROM utilisateur WHERE id_user = ?";
     return executeUpdate($sql, [$id]);
 }
+
+/**
+ * Enregistre un nouvel Auteur créé par l'Administrateur
+ */
+function saveAuteur(string $nom, string $prenom, string $email, string $password): bool {
+    // Le rôle est directement fixé à 'auteur' pour sécuriser l'action
+    $sql = "INSERT INTO utilisateur (nom, prenom, email, password, role, statut_lecteur) 
+            VALUES (?, ?, ?, ?, 'auteur', 'actif')";
+            
+    return executeUpdate($sql, [trim($nom), trim($prenom), trim($email), trim($password)]);
+}
+
+/**
+ * Vérifie si une adresse email existe déjà dans la base de données
+ */
+function isEmailExists(string $email): bool {
+    $sql = "SELECT COUNT(*) FROM utilisateur WHERE TRIM(email) = ?";
+    $result = executeSelect($sql, [trim($email)], true);
+    return $result['COUNT(*)'] > 0;
+}
