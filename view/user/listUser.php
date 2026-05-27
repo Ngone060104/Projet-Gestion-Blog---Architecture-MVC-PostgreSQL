@@ -1,15 +1,13 @@
 <!-- view/user/listUser.php -->
 <div class="space-y-6 w-full font-sans">
-
-    <!-- EN-TÊTE DE LA PAGE -->
-
-
-
+    <!-- EN-TÊTE + BOUTON AJOUTER (STYLE DE LA MAQUETTE) -->
     <div class="flex items-center justify-between border-b border-gray-100 p-5 bg-white rounded-lg ">
         <h2 class="text-xl font-extrabold text-gray-800">Liste des Utilisateurs</h2>
-        <button class="px-4 py-2 bg-[#C79B54] hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-sm tracking-wide transition">
-            + ajouter auteur
+        <!-- Dans view/user/listUser.php (Ligne 7) -->
+        <button onclick="toggleModal(true)" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-sm tracking-wide transition">
+            + ajouter utilisateur
         </button>
+
     </div>
 
     <!-- 🔍 ZONE FILTRER (STYLE DE LA MAQUETTE) -->
@@ -100,11 +98,13 @@
 
                             <td class="py-3.5 px-6 text-center space-x-3">
                                 <!-- Bouton Supprimer (Rouge) -->
-                                <a href="<?= path('user', 'delete') ?>&id=<?= $u['id_user'] ?>"
-                                    onclick="return confirm('Supprimer cet utilisateur ?')"
-                                    class="text-red-500 hover:text-red-700 text-sm transition">
+                                <!-- Dans le tbody de ta table, remplace l'ancien lien de suppression par ce bouton cliquable -->
+                                <button type="button"
+                                    onclick="openDeleteModal(<?= $u['id_user'] ?>, '<?= htmlspecialchars($u['prenom'] . ' ' . $u['nom']) ?>', '<?= $u['role'] ?>')"
+                                    class="text-red-500 hover:text-red-700 text-sm transition transform hover:scale-110">
                                     <i class="fas fa-trash-alt"></i>
-                                </a>
+                                </button>
+
                                 <!-- Bouton Voir (Bleu) -->
                                 <button class="text-blue-500 hover:text-blue-700 text-sm transition">
                                     <i class="fas fa-eye"></i>
@@ -122,3 +122,159 @@
     </div>
 </div>
 </div>
+
+<!-- =========================================================================
+     FENÊTRE MODALE D'AJOUT D'AUTEUR 
+     ========================================================================= -->
+<div id="auteurModal" class="<?= ($openModal) ? 'flex' : 'hidden' ?> fixed inset-0 bg-black/50 items-center justify-center z-50 p-4 animate-fade-in">
+
+    <div class="bg-white w-full max-w-xl rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transform transition-all">
+
+        <!-- EN-TÊTE MODALE -->
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <h3 class="text-lg font-extrabold text-gray-800">Ajout auteur</h3>
+            <button onclick="toggleModal(false)" class="text-gray-400 hover:text-gray-600 text-xl font-bold transition">✕</button>
+        </div>
+
+        <!-- BANDEAU ATTENTION OR/MARRON DE VOTRE MAQUETTE -->
+        <div class="mx-6 mt-4 bg-[#C19E55] text-white p-4 rounded-xl flex items-start gap-3 shadow-sm">
+            <div class="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-xs font-serif italic shrink-0">i</div>
+            <div>
+                <h5 class="text-xs font-bold uppercase tracking-wider">Attention</h5>
+                <p class="text-[11px] opacity-90 mt-0.5 font-medium">Veillez à remplir toutes les champs sans exception.</p>
+            </div>
+        </div>
+
+        <!-- FORMULAIRE -->
+        <form action="<?= WEBROOT ?>?controller=user&action=index" method="POST" class="p-6 space-y-4" novalidate>
+            <input type="hidden" name="action_type" value="add_auteur">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Nom -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Nom</label>
+                    <input type="text" name="nom" placeholder="nom" value="<?= htmlspecialchars($_POST['nom'] ?? '') ?>"
+                        class="w-full px-3 py-2.5 bg-gray-50 border <?= isset($erreurs['nom']) ? 'border-red-400' : 'border-gray-200' ?> rounded-xl text-xs outline-none focus:bg-white focus:border-amber-500 font-medium">
+                    <?php if (isset($erreurs['nom'])): ?>
+                        <p class="text-red-500 text-[10px] font-bold mt-1 pl-1"><i class="fas fa-exclamation-circle mr-1"></i><?= $erreurs['nom'] ?></p>
+                    <?php endif; ?>
+                </div>
+                <!-- Prénom -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Prenom</label>
+                    <input type="text" name="prenom" placeholder="prenom" value="<?= htmlspecialchars($_POST['prenom'] ?? '') ?>"
+                        class="w-full px-3 py-2.5 bg-gray-50 border <?= isset($erreurs['prenom']) ? 'border-red-400' : 'border-gray-200' ?> rounded-xl text-xs outline-none focus:bg-white focus:border-amber-500 font-medium">
+                    <?php if (isset($erreurs['prenom'])): ?>
+                        <p class="text-red-500 text-[10px] font-bold mt-1 pl-1"><i class="fas fa-exclamation-circle mr-1"></i><?= $erreurs['prenom'] ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Email -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Email</label>
+                    <input type="email" name="email" placeholder="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
+                        class="w-full px-3 py-2.5 bg-gray-50 border <?= isset($erreurs['email']) ? 'border-red-400' : 'border-gray-200' ?> rounded-xl text-xs outline-none focus:bg-white focus:border-amber-500 font-medium">
+                    <?php if (isset($erreurs['email'])): ?>
+                        <p class="text-red-500 text-[10px] font-bold mt-1 pl-1"><i class="fas fa-exclamation-circle mr-1"></i><?= $erreurs['email'] ?></p>
+                    <?php endif; ?>
+                </div>
+                <!-- Password -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
+                    <input type="text" name="password" placeholder="password" value="<?= htmlspecialchars($_POST['password'] ?? '') ?>"
+                        class="w-full px-3 py-2.5 bg-gray-50 border <?= isset($erreurs['password']) ? 'border-red-400' : 'border-gray-200' ?> rounded-xl text-xs outline-none focus:bg-white focus:border-amber-500 font-medium">
+                    <?php if (isset($erreurs['password'])): ?>
+                        <p class="text-red-500 text-[10px] font-bold mt-1 pl-1"><i class="fas fa-exclamation-circle mr-1"></i><?= $erreurs['password'] ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+
+
+            <div class="pt-2">
+                <button type="submit" class="w-full py-3 bg-[#C19E55] hover:bg-[#A8853F] text-white font-extrabold text-xs rounded-xl shadow-md uppercase tracking-wider transition">
+                    Enregistrer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================================
+     FENÊTRE MODALE DE CONFIRMATION DE SUPPRESSION (STRICTEMENT FIDÈLE À LA MAQUETTE)
+     ========================================================================= -->
+<div id="deleteModal" class="hidden fixed inset-0 bg-black/50 items-center justify-center z-50 p-4 animate-fade-in">
+
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 text-center transform transition-all border border-gray-100 space-y-6">
+
+        <!-- Rond Rouge avec le point d'exclamation de ta maquette -->
+        <div class="flex justify-center">
+            <div class="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center text-white text-3xl font-extrabold shadow-md shadow-red-500/20">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+        </div>
+
+        <!-- Titre dynamique selon le rôle de la ligne -->
+        <div>
+            <h4 class="text-xl font-extrabold text-gray-900 tracking-tight" id="deleteModalTitle">Supprimer l' " + userRole + " ?</h4>
+            <p class="text-sm text-gray-500 font-medium mt-3 px-4">
+                Cette action entraînera la suppression de l'<span id="deleteUserRole">lecteur</span> <br>
+                <span id="deleteUserName" class="font-bold text-gray-800"></span>.
+            </p>
+        </div>
+
+        <!-- Boutons d'Action alignés côte à côte -->
+        <div class="flex items-center justify-end gap-3 pt-2">
+            <!-- Bouton Annuler (Gris arrondi) -->
+            <button onclick="closeDeleteModal()" class="px-5 py-2.5 bg-gray-300 hover:bg-gray-400 text-white font-bold rounded-xl text-xs transition tracking-wide shadow-sm">
+                annuler
+            </button>
+            <!-- Bouton Supprimer (Rouge vif) -->
+            <a id="deleteConfirmBtn" href="#" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs transition tracking-wide shadow-md shadow-amber-600/10">
+                Supprimer
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function toggleModal(show) {
+        const modal = document.getElementById('auteurModal');
+        if (show) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        } else {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+    }
+
+    // Fonctions de contrôle de la modale de suppression
+function openDeleteModal(userId, fullName, userRole) {
+    const modal = document.getElementById('deleteModal');
+    
+    // 1. Adapter le titre selon le rôle (Auteur ou Lecteur)
+    document.getElementById('deleteModalTitle').textContent = "Supprimer l' " + userRole + " ?";
+    document.getElementById('deleteUserRole').textContent = userRole;
+    
+    // 2. Injecter le Prénom et le Nom récupérés de la ligne
+    document.getElementById('deleteUserName').textContent = fullName;
+    
+    // 3. Construire le lien réel qui va appeler ton userController.php -> deleteAction
+    document.getElementById('deleteConfirmBtn').href = "<?= WEBROOT ?>?controller=user&action=delete&id=" + userId;
+    
+    // 4. Afficher la modale proprement à l'écran
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+}
+
+</script>
