@@ -13,19 +13,29 @@ require_once(ROOT."config/helpers.php");
 require_once(ROOT."config/validator.php");
 require_once(ROOT."core/route.php");
 
-// Si l'utilisateur n'est pas connecté et qu'il ne demande pas explicitement à aller sur le contrôleur d'authentification
-if (!isset($_SESSION['user']) && ($_REQUEST['controller'] ?? '') !== 'auth') {
+
+
+// On récupère le nom du contrôleur (par défaut 'dashboard')
+$ctrl=$_REQUEST["controller"]??"home";
+
+// 2. SÉCURITÉ INTELLIGENTE :
+// Si l'utilisateur n'est pas connecté, il peut voir 'home' (le site) et 'auth' (connexion/inscription)
+// Mais s'il essaie d'aller sur 'dashboard', 'user', 'comment', ou 'categorie', on le renvoie au login
+$controleurs_prives = ['dashboard', 'user', 'comment', 'signalement', 'categorie'];
+
+if (!isset($_SESSION['user']) && in_array($ctrl, $controleurs_prives)) {
     header("Location: " . path("auth", "login"));
     exit();
 }
-
-// On récupère le nom du contrôleur (par défaut 'dashboard')
-$ctrl=$_REQUEST["controller"]??"dashboard";
+// Si l'utilisateur n'est pas connecté et qu'il ne demande pas explicitement à aller sur le contrôleur d'authentification
+// if (!isset($_SESSION['user']) && ($_REQUEST['controller'] ?? '') !== 'auth') {
+//     header("Location: " . path("auth", "login"));
+//     exit();
+// }
 // On appelle la fonction de routage définie ailleurs
 dispatch($ctrl);
 // echo "test index";
 
-// Dans public/index.php
 
 
 

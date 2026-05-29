@@ -25,7 +25,7 @@
                         
                         <div class="text-right shrink-0">
                             <p class="text-xs font-bold text-gray-700">Par : <?= htmlspecialchars($s['lecteur_prenom'] . ' ' . $s['lecteur_nom']) ?></p>
-                            <p class="text-[9px] text-gray-400 font-mono"><?= date('d/m H:i', strtotime($s['date_signalement'])) ?></p>
+                          <p class="text-[9px] text-gray-400 font-mono">Alerte Récents</p>
                         </div>
                     </div>
 
@@ -45,7 +45,7 @@
                         <div class="flex items-center gap-2">
                             <?php if ($s['statut'] === 'En attente'): ?>
                                 <!-- Bouton Rejeter l'alerte (Gris) -->
-                                <a href="<?= path('signalement', 'dismiss') ?>&id=<?= $s['id_signalement'] ?>" 
+                                <a href="<?= path('signalement', 'dismiss') ?>&id=<?= $s['id_signal'] ?>" 
                                    class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 text-[10px] font-bold uppercase tracking-wider rounded-lg transition">
                                     Innocenter / Rejeter
                                 </a>
