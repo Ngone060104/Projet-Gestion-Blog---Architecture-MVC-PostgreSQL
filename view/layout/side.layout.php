@@ -53,6 +53,13 @@
                         <i class="fas fa-bell w-5 text-lg"></i>
                         <span>Signalement</span>
                     </a>
+                    
+                     <a href="<?= path('categorie', 'index') ?>"
+                        class="flex items-center space-x-4 px-5 py-3.5 rounded-xl transition-all duration-200 font-medium text-sm
+                  <?= $ctrl_actif === 'categorie' ? 'bg-amber-500/20 text-amber-500 font-bold' : 'text-gray-400 hover:bg-gray-800 hover:text-white' ?>">
+                        <i class="fas fa-tags w-5 text-lg"></i>
+                        <span>Categories</span>
+                    </a>
                 <?php endif; ?>
                   <a href="<?= path('article', 'index') ?>"
                         class="flex items-center space-x-4 px-5 py-3.5 rounded-xl transition-all duration-200 font-medium text-sm
@@ -60,6 +67,7 @@
                         <i class="fas fa-book w-5 text-lg"></i>
                         <span>Articles</span>
                     </a>
+                 
             </nav>
 
         </div>

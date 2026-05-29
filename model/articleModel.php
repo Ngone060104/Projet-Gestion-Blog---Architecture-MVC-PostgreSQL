@@ -30,7 +30,7 @@ function findAllArticles(int $id_auteur = 0,int $id_categorie = 0): array {
  * Insère un nouvel article en base de données
  */
 function saveArticle(string $titre, string $contenu, string $description, string $slug, string $statut, int $id_user, int $id_categorie, string $image): bool {
-    $sql = "INSERT INTO article (titre, contenu, description, slug, statut, id_utilisateur, id_categorie, image) 
+    $sql = "INSERT INTO article (titre, contenu, description, slug, statut, id_user, id_categorie, image) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             
     return executeUpdate($sql, [
