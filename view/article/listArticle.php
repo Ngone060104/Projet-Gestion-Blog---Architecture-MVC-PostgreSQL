@@ -4,7 +4,7 @@
     <!-- EN-TÊTE DE LA PAGE -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-5 space-y-1 bg-white p-4 rounded-xl border border-gray-100 shadow-sm ">
         <div class="">
-            <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight font-serif">Gestion des Articles</h2>
+            <h2 class="text-2xl font-bold text-gray-900 tracking-tight font-serif">Gestion des Articles</h2>
             <p class="text-sm text-gray-400 mt-1">
                 <?= $user['role'] === 'admin' ? 'Visualisez l\'ensemble des publications du blog.' : 'Gérez, rédigez et organisez vos publications personnelles.' ?>
             </p>
@@ -201,7 +201,7 @@
             <!-- Contenu (Le grand éditeur de texte de la maquette) -->
             <div>
                 <label class="block text-xs font-bold text-gray-700 mb-1">Contenu</label>
-                <textarea name="contents" rows="5" placeholder="ecrivez la .............."
+                <textarea name="content" rows="5" placeholder="ecrivez la .............."
                     class="w-full px-4 py-3 bg-gray-50 border <?= isset($erreurs['contenu']) ? 'border-red-400' : 'border-gray-200' ?> rounded-xl text-xs outline-none focus:bg-white focus:border-amber-500 font-medium resize-none"><?= htmlspecialchars($_POST['contents'] ?? '') ?></textarea>
                 <?php if (isset($erreurs['contenu'])): ?><p class="text-red-500 text-[10px] font-bold mt-1"><?= $erreurs['contenu'] ?></p><?php endif; ?>
             </div>
