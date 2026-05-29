@@ -105,7 +105,7 @@
                             </div>
                         </div>
                         <!-- Lien interactif "Voir plus" -->
-                        <a href="<?= WEBROOT ?>?controller=article&action=show&slug=<?= $art['slug'] ?>"
+                        <a href="<?= path('article', 'show') ?>&slug=<?= $art['slug'] ?>"
                             class="text-blue-500 hover:text-blue-600 font-bold text-xs inline-flex items-center gap-1.5 transition group/btn">
                             <span>Voir plus</span>
                             <i class="fas fa-arrow-right text-[10px] transform group-hover/btn:translate-x-1 transition-transform"></i>

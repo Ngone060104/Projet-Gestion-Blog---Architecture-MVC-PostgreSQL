@@ -53,3 +53,27 @@ function findAllCategories(): array {
     return executeSelect($sql);
 }
 
+
+//   Récupère un article unique grâce à son slug URL
+
+function findArticleBySlug(string $slug): ?array {
+    $sql = "SELECT a.*, c.nom as categorie_nom, u.prenom, u.nom 
+            FROM article a
+            JOIN categorie_article c ON a.id_categorie = c.id_categorie
+            JOIN utilisateur u ON a.id_user = u.id_user 
+            WHERE a.slug = ?";
+    $result = executeSelect($sql, [trim($slug)], true);
+    return $result ? $result : null;
+}
+
+/**
+ * Récupère tous les commentaires liés à un article spécifique
+ */
+function findCommentsByArticleId(int $id_article): array {
+    $sql = "SELECT c.*, u.prenom, u.nom, u.email 
+            FROM commentaire c
+            JOIN utilisateur u ON c.id_user = u.id_user
+            WHERE c.id_article = ?
+            ORDER BY c.date DESC";
+    return executeSelect($sql, [$id_article]);
+}
