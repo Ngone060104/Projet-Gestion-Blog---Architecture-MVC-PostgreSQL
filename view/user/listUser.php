@@ -10,7 +10,7 @@
 
     </div>
 
-    <!-- 🔍 ZONE FILTRER (STYLE DE LA MAQUETTE) -->
+    <!-- ZONE FILTRER (STYLE DE LA MAQUETTE) -->
     <form action="<?= WEBROOT ?>" method="GET" class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
         <input type="hidden" name="controller" value="user">
         <input type="hidden" name="action" value="index">
@@ -137,7 +137,7 @@
         </div>
 
         <!-- BANDEAU ATTENTION OR/MARRON DE VOTRE MAQUETTE -->
-        <div class="mx-6 mt-4 bg-[#C19E55] text-white p-4 rounded-xl flex items-start gap-3 shadow-sm">
+        <div class="mx-6 mt-4 bg-amber-500 text-white p-4 rounded-xl flex items-start gap-3 shadow-sm">
             <div class="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-xs font-serif italic shrink-0">i</div>
             <div>
                 <h5 class="text-xs font-bold uppercase tracking-wider">Attention</h5>
@@ -194,7 +194,7 @@
 
 
             <div class="pt-2">
-                <button type="submit" class="w-full py-3 bg-[#C19E55] hover:bg-[#A8853F] text-white font-extrabold text-xs rounded-xl shadow-md uppercase tracking-wider transition">
+                <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs rounded-xl shadow-md uppercase tracking-wider transition">
                     Enregistrer
                 </button>
             </div>
