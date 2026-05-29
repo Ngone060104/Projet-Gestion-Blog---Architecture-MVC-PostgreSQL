@@ -1,5 +1,5 @@
 <?php
-// Dans controller/authController.php
+// controller/authController.php
 require_once(ROOT . "model/userModel.php");
 
 function loginAction() {
@@ -17,51 +17,46 @@ function loginAction() {
             // Recherche en base de données PostgreSQL
             $user = findUserByEmailAndPassword($email, $password);
 
-             // CORRECTION : Vérification stricte que l'utilisateur existe bien et n'est pas vide
-    if ($user !== false && !empty($user)) {
-
-            if ($user) {
-                // SÉCURITÉ SUPPLÉMENTAIRE : On vérifie si le lecteur n'est pas banni
+            // Vérification stricte que l'utilisateur existe bien et n'est pas vide
+            if ($user !== false && !empty($user)) {
+                
+                // SÉCURITÉ : On vérifie si le compte est banni
                 if (isset($user['statut_lecteur']) && $user['statut_lecteur'] === 'estBanni') {
-                    $erreurs['global'] = "Votre compte a été suspendu par l'administrateur.";
+                    $erreurs['global'] = "Votre compte a été suspendu pour non-respect des règles de la communauté.";
                 } else {
-                    // Ouverture de la session
+                    // Ouverture de la session globale
                     $_SESSION['user'] = $user;
                     
-                    // Redirection automatique vers votre futur dashboard
-                    header("Location: " . WEBROOT . "?controller=dashboard&action=index");
-                    exit();
+                    //  REDIRECTION INTELLIGENTE SELON LE RÔLE D'ADN
+                    if (isset($user['role']) && $user['role'] === 'lecteur') {
+                        // Le lecteur reste sur le site public pour lire et commenter
+                        header("Location: " . WEBROOT);
+                        exit();
+                    } else {
+                        // L'admin et l'auteur vont sur le dashboard de gestion
+                        header("Location: " . WEBROOT . "?controller=dashboard&action=index");
+                        exit();
+                    }
                 }
             } else {
                 $erreurs['global'] = "Identifiants incorrects ou compte inexistant.";
             }
         }
     }
-    if ($user) {
-    if ($user['role'] === 'lecteur' && $user['statut_lecteur'] === 'estBanni') {
-        $erreurs['global'] = "Votre compte a été suspendu pour non-respect des règles de la communauté.";
-    } else {
-        $_SESSION['user'] = $user;
-        header("Location: " . WEBROOT . "?controller=dashboard&action=index");
-        exit();
-    }
-}
-    }
-
-    // À ajouter dans la fonction de traitement de connexion de votre authController.php :
-
-
 
     // Chargement de la vue de connexion avec un layout blanc (sans barre latérale)
     loadView("auth/login", ["erreurs" => $erreurs], "blank");
 }
 
 function logoutAction() {
-    if (session_status() === PHP_SESSION_NONE) { session_start(); }
+    if (session_status() === PHP_SESSION_NONE) { 
+        session_start(); 
+    }
     unset($_SESSION['user']);
     session_destroy();
     
-    header("Location: " . WEBROOT . "?controller=auth&action=login");
+    // Après déconnexion, on ramène à l'accueil du site public
+    header("Location: " . WEBROOT);
     exit();
 }
 

@@ -175,3 +175,89 @@ function showAction() {
     ], "side");
 }
 
+/**
+ * Affiche un article côté public et traite l'envoi des commentaires
+ */
+function showPublicAction() {
+    require_once(ROOT . "model/articleModel.php");
+    require_once(ROOT . "model/frontModel.php");
+
+    $slug = trim($_GET['slug'] ?? '');
+    if (empty($slug)) {
+        header("Location: " . WEBROOT);
+        exit();
+    }
+
+    // 1. Récupération de l'article par son slug
+    $article = findArticleBySlug($slug);
+    if (!$article) {
+        header("Location: " . WEBROOT);
+        exit();
+    }
+
+    $erreurs = [];
+
+    // 2. TRAITEMENT DE L'AJOUT DE COMMENTAIRE (POST)
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && ($_POST['action_type'] ?? '') === 'add_comment') {
+        // Sécurité : Il faut être connecté pour commenter
+        if (!isset($_SESSION['user'])) {
+            header("Location: " . path("auth", "login"));
+            exit();
+        }
+
+        $contenu = trim($_POST['commentaire_texte'] ?? '');
+        isEmpty('commentaire_texte', $contenu, $erreurs, "Le texte du commentaire ne peut pas être vide.");
+
+        if (validate($erreurs)) {
+            $id_article = (int)$article['id_article'];
+            $id_user = (int)$_SESSION['user']['id_user'];
+
+            if (saveCommentairePublic($contenu, $id_article, $id_user)) {
+                // Redirection sur la même page pour vider le formulaire et voir le commentaire
+                header("Location: " . WEBROOT . "?controller=article&action=showPublic&slug=" . $slug);
+                exit();
+            } else {
+                $erreurs['global'] = "Impossible d'enregistrer votre commentaire.";
+            }
+        }
+    }
+
+         // --- CAS B : L'ENVOI DE SIGNALEMENT (CE QUI MANQUAIT !) ---
+        if (($_POST['action_type'] ?? '') === 'report_comment') {
+            if (!isset($_SESSION['user'])) {
+                header("Location: " . path("auth", "login"));
+                exit();
+            }
+
+            $motif = trim($_POST['motif'] ?? '');
+            $id_commentaire = (int)($_POST['id_commentaire'] ?? 0);
+            $id_user = (int)($_SESSION['user']['id_utilisateur'] ?? $_SESSION['user']['id_user'] ?? $_SESSION['user']['id'] ?? 0);
+            $id_article = (int)$article['id_article'];
+
+            if (!empty($motif) && $id_commentaire > 0 && $id_user > 0) {
+                require_once(ROOT . "model/signalementModel.php");
+                
+                if (saveSignalementPublic($motif, $id_commentaire, $id_article, $id_user)) {
+                    // Redirection propre avec un paramètre de succès
+                    header("Location: " . WEBROOT . "?controller=article&action=showPublic&slug=" . $slug . "&reported=1");
+                    exit();
+                } else {
+                    $erreurs['global'] = "Erreur technique lors du signalement.";
+                }
+            }
+        }
+
+    // 3. Charger les catégories pour la Navbar du layout public
+    $nav_categories = getNavbarCategories();
+    // 4. Charger les commentaires existants de cet article
+    $comments = findCommentsByArticleId((int)$article['id_article']);
+
+    loadView("home/detailArticle", [
+        "nav_categories" => $nav_categories,
+        "article" => $article,
+        "comments" => $comments,
+        "erreurs" => $erreurs,
+        "user" => $_SESSION['user'] ?? null
+    ], "public"); // Utilisation du layout public avec la grande barre blanche
+}
+

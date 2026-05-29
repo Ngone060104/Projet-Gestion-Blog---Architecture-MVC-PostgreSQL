@@ -17,7 +17,7 @@ function findAllCommentsWithDetails(): array {
  * Permet à l'administrateur de bannir ou débannir le rédacteur du commentaire
  */
 function updateUserStatus(int $id_utilisateur, string $nouveauStatut): bool {
-    $sql = "UPDATE utilisateur SET statut_lecteur = ? WHERE id_utilisateur = ?";
+    $sql = "UPDATE utilisateur SET statut_lecteur = ? WHERE id_user = ?";
     return executeUpdate($sql, [trim($nouveauStatut), $id_utilisateur]);
 }
 
