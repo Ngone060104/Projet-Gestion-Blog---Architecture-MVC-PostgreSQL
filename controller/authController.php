@@ -37,7 +37,20 @@ function loginAction() {
             }
         }
     }
+    if ($user) {
+    if ($user['role'] === 'lecteur' && $user['statut_lecteur'] === 'estBanni') {
+        $erreurs['global'] = "Votre compte a été suspendu pour non-respect des règles de la communauté.";
+    } else {
+        $_SESSION['user'] = $user;
+        header("Location: " . WEBROOT . "?controller=dashboard&action=index");
+        exit();
     }
+}
+    }
+
+    // À ajouter dans la fonction de traitement de connexion de votre authController.php :
+
+
 
     // Chargement de la vue de connexion avec un layout blanc (sans barre latérale)
     loadView("auth/login", ["erreurs" => $erreurs], "blank");
