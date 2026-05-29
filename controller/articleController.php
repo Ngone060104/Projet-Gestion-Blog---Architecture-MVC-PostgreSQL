@@ -59,7 +59,7 @@ require_once(ROOT . "model/articleModel.php");
                 $erreurs['id_categorie'] = "Veuillez choisir une catégorie.";
             }
 
-            // 🔥 GESTION DE L'UPLOAD DE LA PHOTO
+            // GESTION DE L'UPLOAD DE LA PHOTO
             $imageNom = 'default.jpg'; // Image par défaut si l'auteur n'en met pas
 
             if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
@@ -141,5 +141,37 @@ function generateSlug(string $text): string
 }
 
 /**
- * Helper de génération de slug URL
+ * Affiche les détails complets d'un article pour l'auteur ou l'admin
  */
+function showAction() {
+    if (!isset($_SESSION['user'])) {
+        header("Location: " . path("auth", "login"));
+        exit();
+    }
+
+    // Récupération du slug depuis l'URL (Ex: ?controller=article&action=show&slug=mon-article)
+    $slug = trim($_GET['slug'] ?? '');
+    
+    if (empty($slug)) {
+        header("Location: " . WEBROOT . "?controller=article&action=index");
+        exit();
+    }
+
+    // Récupération de l'article
+    $article = findArticleBySlug($slug);
+
+    if (!$article) {
+        die("Erreur : Cet article n'existe pas ou a été supprimé.");
+    }
+
+    // Récupération des commentaires liés à cet article
+    $comments = findCommentsByArticleId((int)$article['id_article']);
+
+    // Chargement de la vue détail avec le layout de la Sidebar
+    loadView("article/showArticle", [
+        "article" => $article,
+        "comments" => $comments,
+        "user" => $_SESSION['user']
+    ], "side");
+}
+
