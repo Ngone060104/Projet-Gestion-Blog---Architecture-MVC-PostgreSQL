@@ -1,10 +1,9 @@
 <?php
 // model/articleModel.php
 
-/**
- * Récupère tous les articles du blog
- * Si un id_auteur est fourni, récupère uniquement SES articles (pour Astou Diop)
- */
+// Récupère tous les articles du blog
+//   Si un id_auteur est fourni, récupère uniquement SES articles (pour Astou Diop)
+ 
 function findAllArticles(int $id_auteur = 0,int $id_categorie = 0): array {
     $sql = "SELECT a.*, c.nom as categorie_nom, u.prenom, u.nom 
             FROM article a
@@ -26,9 +25,8 @@ function findAllArticles(int $id_auteur = 0,int $id_categorie = 0): array {
     return executeSelect($sql, $params);
 }
 
-/**
- * Insère un nouvel article en base de données
- */
+//  Insère un nouvel article en base de données
+
 function saveArticle(string $titre, string $contenu, string $description, string $slug, string $statut, int $id_user, int $id_categorie, string $image): bool {
     $sql = "INSERT INTO article (titre, contenu, description, slug, statut, id_user, id_categorie, image) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -66,9 +64,8 @@ function findArticleBySlug(string $slug): ?array {
     return $result ? $result : null;
 }
 
-/**
- * Récupère tous les commentaires liés à un article spécifique
- */
+// Récupère tous les commentaires liés à un article spécifique
+
 function findCommentsByArticleId(int $id_article): array {
     $sql = "SELECT c.*, u.prenom, u.nom, u.email 
             FROM commentaire c

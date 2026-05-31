@@ -73,7 +73,6 @@ function indexAction()
         ];
         $i++;
     }
-    // À ajouter dans la fonction indexAction() de votre contrôleur :
     $jours = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     $graph_data = [];
 

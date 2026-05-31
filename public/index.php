@@ -13,8 +13,6 @@ require_once(ROOT."config/helpers.php");
 require_once(ROOT."config/validator.php");
 require_once(ROOT."core/route.php");
 
-
-
 // On récupère le nom du contrôleur (par défaut 'dashboard')
 $ctrl=$_REQUEST["controller"]??"home";
 
@@ -27,14 +25,10 @@ if (!isset($_SESSION['user']) && in_array($ctrl, $controleurs_prives)) {
     header("Location: " . path("auth", "login"));
     exit();
 }
-// Si l'utilisateur n'est pas connecté et qu'il ne demande pas explicitement à aller sur le contrôleur d'authentification
-// if (!isset($_SESSION['user']) && ($_REQUEST['controller'] ?? '') !== 'auth') {
-//     header("Location: " . path("auth", "login"));
-//     exit();
-// }
+
 // On appelle la fonction de routage définie ailleurs
 dispatch($ctrl);
-// echo "test index";
+
 
 
 

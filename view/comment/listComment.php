@@ -40,14 +40,14 @@
                     <!-- Remplacer les deux boutons du bas de la carte par ces éléments sécurisés -->
                     <div class="flex items-center justify-end gap-2.5 pt-2">
 
-                        <!-- 🔴 Bouton Déclencheur Modale Supprimer -->
+                        <!-- Bouton Déclencheur Modale Supprimer -->
                         <button type="button"
                             onclick="openDeleteCommentModal(<?= $c['id_comment'] ?>)"
                             class="px-4 py-1.5 bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold uppercase tracking-wider rounded-lg transition shadow-sm">
                             Supprimer
                         </button>
 
-                        <!-- 🔵 Bouton Déclencheur Modale Bannir -->
+                        <!-- Bouton Déclencheur Modale Bannir -->
                         <button type="button"
                             onclick="openBanCommentModal(<?= $c['id_user'] ?>, '<?= htmlspecialchars($c['prenom'] . ' ' . $c['nom']) ?>', '<?= $c['statut_lecteur'] ?>')"
                             class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-wider rounded-lg transition shadow-sm">
@@ -74,7 +74,7 @@
 </div>
 
 <!-- =========================================================================
-     🛑 1. MODALE PERSONNALISÉE : CONFIRMATION DE SUPPRESSION DE COMMENTAIRE
+     1. MODALE PERSONNALISÉE : CONFIRMATION DE SUPPRESSION DE COMMENTAIRE
      ========================================================================= -->
 <div id="deleteCommentModal" class="hidden fixed inset-0 bg-black/50 items-center justify-center z-50 p-4 animate-fade-in">
     <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 text-center transform transition-all border border-gray-100 space-y-5">
@@ -101,7 +101,7 @@
 </div>
 
 <!-- =========================================================================
-     ⚠️ 2. MODALE PERSONNALISÉE : CONFIRMATION DE BANNISSEMENT / DÉBANNISSEMENT
+      2. MODALE PERSONNALISÉE : CONFIRMATION DE BANNISSEMENT / DÉBANNISSEMENT
      ========================================================================= -->
 <div id="banCommentModal" class="hidden fixed inset-0 bg-black/50 items-center justify-center z-50 p-4 animate-fade-in">
     <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 text-center transform transition-all border border-gray-100 space-y-5">

@@ -5,41 +5,36 @@
 // SECTION 1 : LES REQUÊTES GLOBALES (POUR L'ADMINISTRATEUR)
 // =========================================================================
 
-/**
- * Compte le nombre total d'auteurs inscrits sur le blog
- */
+//  Compte le nombre total d'auteurs inscrits sur le blog
+ 
 function countAllAuteurs(): int {
     $sql = "SELECT COUNT(*) as total FROM utilisateur WHERE role = 'auteur'";
     $result = executeSelect($sql, [], true);
     return (int)($result['total'] ?? 0);
 }
 
-/**
- * Compte le nombre total de lecteurs inscrits sur le blog
- */
+//  Compte le nombre total de lecteurs inscrits sur le blog
 function countAllLecteurs(): int {
     $sql = "SELECT COUNT(*) as total FROM utilisateur WHERE role = 'lecteur'";
     $result = executeSelect($sql, [], true);
     return (int)($result['total'] ?? 0);
 }
 
-/**
- * Compte le nombre total de commentaires rédigés sur l'ensemble du blog
- */
+// Compte le nombre total de commentaires rédigés sur l'ensemble du blog
 function countAllComments(): int {
     $sql = "SELECT COUNT(*) as total FROM commentaire";
     $result = executeSelect($sql, [], true);
     return (int)($result['total'] ?? 0);
 }
 
-/**
- * Compte le nombre total d'articles publiés ou en brouillon sur le blog
- */
+// Compte le nombre total d'articles publiés ou en brouillon sur le blog
+
 function countAllArticles(): int {
     $sql = "SELECT COUNT(*) as total FROM article";
     $result = executeSelect($sql, [], true);
     return (int)($result['total'] ?? 0);
 }
+
 
 
 // =========================================================================
