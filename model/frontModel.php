@@ -38,9 +38,8 @@ function getDerniersArticles(): array {
     return executeSelect($sql);
 }
 
-/**
- * Insère un nouveau commentaire lié à un article et à un lecteur
- */
+// Insère un nouveau commentaire lié à un article et à un lecteur
+
 function saveCommentairePublic(string $contenu, int $id_article, int $id_user): bool {
     $sql = "INSERT INTO commentaire (contenu, id_article, id_user, date) 
             VALUES (?, ?, ?, CURRENT_TIMESTAMP)";

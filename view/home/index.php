@@ -1,4 +1,4 @@
-<!-- view/home/index.php -->
+
 <div class="w-full space-y-12 pb-12 font-sans animate-fade-in">
 
   
@@ -9,7 +9,6 @@
         <img src="<?= WEBROOT ?>uploads/blog.png" 
              alt="Eblog Background" 
              class="w-full h-full object-cover object-center select-none">
-        <!-- Léger voile sombre pour que le grand titre blanc reste lisible -->
         <div class="absolute inset-0 bg-black/10"></div>
     </div>
     
@@ -59,7 +58,7 @@
                             <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
                                 <div class="flex items-center justify-between text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                                     <span><?= htmlspecialchars($art['categorie_nom']) ?></span>
-                                    <span>1 day ago</span>
+                                    <span><?= date('d M Y', strtotime($art['date_pub'])) ?></span>
                                 </div>
                                 <h3 class="text-sm font-extrabold text-gray-800 leading-snug line-clamp-2 group-hover:text-amber-500 transition-colors">
                                     <?= htmlspecialchars($art['titre']) ?>
@@ -128,7 +127,6 @@
                 </div>
 
                 <!-- BLOC DE DROITE (1 COLONNE : SÉRIES/ÉPISODES DE VOTRE MAQUETTE) -->
-                               <!-- BLOC DE DROITE (1 COLONNE : SÉRIES/ÉPISODES DE VOTRE MAQUETTE) -->
                 <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
                     <div class="flex items-center justify-between border-b border-gray-50 pb-2">
                         <h4 class="text-xs font-black text-gray-800 uppercase tracking-wider">Séries Sénégalaises</h4>

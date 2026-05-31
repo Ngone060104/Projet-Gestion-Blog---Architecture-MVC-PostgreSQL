@@ -5,7 +5,7 @@
         <h2 class="text-xl font-extrabold text-gray-800">Liste des Utilisateurs</h2>
         <!-- Dans view/user/listUser.php (Ligne 7) -->
         <button onclick="toggleModal(true)" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl shadow-sm tracking-wide transition">
-            + ajouter utilisateur
+            + ajouter auteur
         </button>
 
     </div>
@@ -48,7 +48,7 @@
 </div>
 </form>
 
-<!-- 📊 INFORMATIONS UTILISATEURS (TABLEAU DORÉ) -->
+<!--  INFORMATIONS UTILISATEURS (TABLEAU DORÉ) -->
 <div class="bg-white rounded-lg  border border-gray-100 shadow-sm overflow-hidden mt-6">
     <div class="px-6 py-4  border-b border-gray-100">
         <h3 class="text-sm font-bold text-gray-800">Informations utilisateurs</h3>
@@ -183,7 +183,7 @@
                 <!-- Password -->
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
-                    <input type="text" name="password" placeholder="password" value="<?= htmlspecialchars($_POST['password'] ?? '') ?>"
+                    <input type="password" name="password" placeholder="password" value="<?= htmlspecialchars($_POST['password'] ?? '') ?>"
                         class="w-full px-3 py-2.5 bg-gray-50 border <?= isset($erreurs['password']) ? 'border-red-400' : 'border-gray-200' ?> rounded-xl text-xs outline-none focus:bg-white focus:border-amber-500 font-medium">
                     <?php if (isset($erreurs['password'])): ?>
                         <p class="text-red-500 text-[10px] font-bold mt-1 pl-1"><i class="fas fa-exclamation-circle mr-1"></i><?= $erreurs['password'] ?></p>
